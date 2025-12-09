@@ -1,13 +1,19 @@
-(function(){
-  const start = performance.now();
-  while (performance.now() - start < 2000) {}
-  const waste = [];
-  for (let i=0;i<200000;i++) { waste.push(Math.random()*i); }
-  window.__waste = waste;
-  window.addEventListener('load', function(){
-    const imgs = document.querySelectorAll('.card img');
-    imgs.forEach(img => { if (img.complete) img.classList.add('loaded'); else img.addEventListener('load', ()=> img.classList.add('loaded')); });
-    const t0 = performance.now();
-    while (performance.now() - t0 < 1000) {}
+/* script.js - Version optimisée */
+
+// On attend que le HTML soit prêt (plus rapide que 'load')
+document.addEventListener('DOMContentLoaded', () => {
+  
+  // Gestion de l'effet d'apparition des images (nécessaire pour le CSS)
+  const imgs = document.querySelectorAll('.card img');
+  
+  imgs.forEach(img => {
+    // Si l'image est déjà dans le cache du navigateur, on l'affiche tout de suite
+    if (img.complete) {
+      img.classList.add('loaded');
+    } else {
+      // Sinon, on attend qu'elle finisse de charger pour l'afficher
+      img.addEventListener('load', () => img.classList.add('loaded'));
+    }
   });
-})();
+
+});
